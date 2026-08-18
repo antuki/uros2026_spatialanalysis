@@ -1,7 +1,7 @@
 ---
 title: "**Atelier R** Statistique spatiale et Cartographie"
-subtitle: "**Rencontres R** Juin 2023"
-author: "Kim Antunez, Etienne Côme"
+subtitle: "**uRos* Novembre 2026"
+author: "Kim Antunez"
 #institute: "Timothée Giraud"
 lang: fr
 language:
@@ -561,7 +561,7 @@ mapviewOptions(leafletHeight=300)
 
 ```{r, cache=FALSE}
 mapview(individus_tues,
-        map.types = "Stamen.TonerLite", legend = TRUE,
+        map.types = "OpenStreetMap.Mapnik", legend = TRUE,
         cex = 5, col.regions = "#217844", lwd = 0, alpha = 0.9,
         layer.name = 'Individus tués')
 ```
@@ -580,7 +580,7 @@ mapviewOptions(leafletHeight=300)
 
 ```{r, cache=FALSE}
 mapview(individus_tues,
-        map.types = "Stamen.TonerLite", legend=TRUE,
+        map.types = "OpenStreetMap.Mapnik", legend=TRUE,
         layer.name = 'Individus tués',
         cex="age", zcol="sexe", lwd=0, alpha=0.9
        )
@@ -1053,6 +1053,14 @@ lat_longs
 
 - [`osmdata`](https://github.com/ropensci/osmdata)
 
+
+```{r, include = FALSE}
+# dans Quarto, préciser un autre lien d'API pour que ça ne bug pas
+osmdata::set_overpass_url(
+  "https://lz4.overpass-api.de/api/interpreter"
+)
+```
+
 ```{r}
 library(osmdata)
 bb = c(4.75, 43.92, 4.85, 43.97) # Avignon
@@ -1114,7 +1122,7 @@ plot(net|>activate("nodes")|>st_geometry(),col="red", cex = 0.2,add=TRUE)
 
 # <small> Crédits et reproductibilité</small> 
 
-Cette formation s'inspire, ainsi que son tutoriel, d'une [précédente formation](https://github.com/comeetie/satRday) donnée par les mêmes auteurs avec Timothée Giraud. 
+Cette formation s'inspire, ainsi que son tutoriel, d'une [précédente formation](https://github.com/comeetie/satRday) donnée avec Etienne Côme et Timothée Giraud. 
 
 
 ##

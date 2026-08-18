@@ -1,7 +1,7 @@
 ---
 title: "**Atelier R** Statistique spatiale et Cartographie"
-subtitle: "**Rencontres R** Juin 2023"
-author: "Kim Antunez, Etienne Côme"
+subtitle: "**uRos* Novembre 2026"
+author: "Kim Antunez"
 lang: fr
 language:
  title-block-author-single: Auteurs
@@ -52,7 +52,7 @@ La base de données utilisée dans ce TP concerne la **géolocalisation des acci
 Vous pouvez télécharger les bases de données brutes  [ici](https://github.com/comeetie/quantilille/raw/main/exercises/data.zip) ou utiliser R pour les télécharger dans votre dossier actuel :
 ```{r, eval=FALSE}
 # télécharger le dataset
-download.file("https://github.com/antuki/RR2023_tuto_statspatiale/raw/main/exercises/data.zip", 
+download.file("https://github.com/antuki/uros2026_spatialanalysis/raw/main/exercises/data.zip", 
               destfile = "data.zip")
 # dézipper
 unzip("data.zip",exdir=".") 
@@ -336,7 +336,7 @@ m <- mapview(accidents.2019.paris |>
         label = accidents.2019.paris$Num_Acc, 
         color = "white", legend = TRUE,
         zcol="grav_f", alpha=0.9,
-        map.types = "Stamen.TonerLite",
+        map.types = "OpenStreetMap.Mapnik",
         layer.name = "Gravite",
         homebutton = FALSE, lwd = 0.2)
 ```
@@ -360,7 +360,7 @@ mapview(accidents.2019.paris |>
         label = accidents.2019.paris$Num_Acc, 
         color = "white", legend = TRUE,
         zcol="grav_f", alpha=0.9,
-        map.types = "Stamen.TonerLite",
+        map.types = "OpenStreetMap.Mapnik",
         layer.name = "Gravite",
         homebutton = FALSE, lwd = 0.2)
 ```
@@ -621,6 +621,13 @@ Utilisez :
 * `osmdata:add_osm_feature()` pour définir la paire key:value recherchée
 * `osmdata:osmdata_sf()` pour récupérer les données osm.
 :::
+
+```{r, include = FALSE}
+# dans Quarto, préciser un autre lien d'API pour que ça ne bug pas
+osmdata::set_overpass_url(
+  "https://lz4.overpass-api.de/api/interpreter"
+)
+```
 
 ::: {.callout-caution collapse="true"}
 ## Solution

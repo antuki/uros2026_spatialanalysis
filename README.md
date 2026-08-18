@@ -1,13 +1,13 @@
 # Analyse spatiale et cartographie avec R
 
-Kim Antunez (@antuki) et Etienne Côme (@comeetie)
+Kim Antunez (@antuki)
 
-**Durée :** 2 heures
+**Durée :** 1h30
 
-Cet atelier, animé lors des [rencontres R 2023](https://rr2023.sciencesconf.org/) à Avignon, est composé de deux parties :
+Cet atelier, animé lors de la conférence [The Use of R in Official Statistics - uRos2026](https://r-project.ro/conference2026.html) à Avignon, est composé de deux parties :
 
-- Un [tutoriel d'apprentissage](https://antuki.github.io/RR2023_tuto_statspatiale/lecture.html) également disponibles sous forme de [slides](https://antuki.github.io/RR2023_tuto_statspatiale/lecture-slides.html) ;
-- Un [recueil d'exercices](https://antuki.github.io/RR2023_tuto_statspatiale/exercises.html)  
+- Un [tutoriel d'apprentissage](https://antuki.github.io/uros2026_spatialanalysis/lecture.html) également disponibles sous forme de [slides](https://antuki.github.io/uros2026_spatialanalysis/lecture-slides.html) ;
+- Un [recueil d'exercices](https://antuki.github.io/uros2026_spatialanalysis/exercises.html)  
 
 ## Données
 
@@ -26,7 +26,7 @@ Les fonds de cartes proviennent de l'[IGN](https://geoservices.ign.fr/documentat
 
 ## Crédits et Licence
 
-Cette présentation s'inspire, ainsi que son tutoriel, d'une précédente formation [donnée](https://github.com/comeetie/satRday) et [redonnée](https://github.com/comeetie/quantilille) par les mêmes auteurs avec Timothée Giraud (@RCarto). 
+Cette présentation s'inspire, ainsi que son tutoriel, d'une précédente formation [donnée](https://github.com/comeetie/satRday) et [redonnée](https://github.com/comeetie/quantilille) et [reredonnée](https://github.com/antuki/RR2023_tuto_statspatiale) avec Etienne Côme (@comeetie) et Timothée Giraud (@RCarto). 
 
 Les contenus de ce répertoire sont diffusés sous licence [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/). Vous êtes libre d'utiliser ces contenus et de les modifier à la seule condition d'en accréditer la provenance et de les rediffuser selon les mêmes termes en indiquant notamment © 2023 Kim Antunez & Etienne Côme.
 
@@ -34,4 +34,5 @@ Les contenus de ce répertoire sont diffusés sous licence [CC BY-NC-SA 3.0](htt
 - Les données IGN ainsi que la Base de données annuelles des accidents corporels de la circulation routière sont diffusées selon les termes de [la licence ouverte Etalab 2.0](https://www.etalab.gouv.fr/licence-ouverte-open-licence). 
 
 - Les données OpenStreetMap sont diffusées selon les termes [Open Data Commons Open Database License](https://www.openstreetmap.org/copyright/fr). 
+
 - Les données Airbnb sont diffusées selon les termes de [Creative Commons CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/).
