@@ -1,6 +1,6 @@
 ---
 title: "**Atelier R** Statistique spatiale et Cartographie"
-subtitle: "**uRos* Novembre 2026"
+subtitle: "**uRos** Novembre 2026"
 author: "Kim Antunez"
 #institute: "Timothée Giraud"
 lang: fr
