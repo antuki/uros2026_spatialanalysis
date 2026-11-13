@@ -543,10 +543,10 @@ mapviewOptions(leafletHeight=400)
 ```
 
 ```{r}
-individus_tues <- accidents.2019.paris |>
-  filter(grav == 2) |> # grav = 2 : individus tués
+killed_people <- accidents.2019.paris |>
+  filter(grav == 2) |> # grav = 2 : killed people
   mutate(age=2019-an_nais) # age
-mapview(individus_tues)
+mapview(killed_people)
 ```
 
 
@@ -560,10 +560,10 @@ mapviewOptions(leafletHeight=300)
 ```
 
 ```{r, cache=FALSE}
-mapview(individus_tues,
+mapview(killed_people,
         map.types = "OpenStreetMap.Mapnik", legend = TRUE,
         cex = 5, col.regions = "#217844", lwd = 0, alpha = 0.9,
-        layer.name = 'Individus tués')
+        layer.name = 'Killed people')
 ```
 
 ## 
@@ -579,9 +579,9 @@ mapviewOptions(leafletHeight=300)
 ```
 
 ```{r, cache=FALSE}
-mapview(individus_tues,
+mapview(killed_people,
         map.types = "OpenStreetMap.Mapnik", legend=TRUE,
-        layer.name = 'Individus tués',
+        layer.name = 'Killed people',
         cex="age", zcol="sexe", lwd=0, alpha=0.9
        )
 ```
@@ -601,7 +601,7 @@ For simplicity, we focus here on `ggplot2`, a very well-known package for all ty
 ## The grammar of graphics
 
 - Wilkinson, L., Anand, A., & Grossman, R. (2005). Graph-theoretic scagnostics. In Information Visualization, IEEE Symposium on (pp. 21-21). IEEE Computer Society.
-- Repris par Wickham, H. (2010). A layered grammar of graphics. Journal of Computational and Graphical Statistics, 19(1), 3-28. And implemented in `ggplot2`
+- Further developed by Wickham, H. (2010). A layered grammar of graphics. Journal of Computational and Graphical Statistics, 19(1), 3-28. And implemented in `ggplot2`
 - grammar &#8594; same construction / philosophy for all types of plots
 
 ## 
@@ -675,7 +675,7 @@ For simplicity, we focus here on `ggplot2`, a very well-known package for all ty
 <!--   theme_bw()+ -->
 <!--   labs(title = "Nombre d'accidentés par type de véhicule et sexe", -->
 <!--        subtitle = "à Paris en 2019, pour les hommes et les femmes ", -->
-<!--        caption = "fichier BAAC 2019, ONISR\nantuki & comeetie, 2023", -->
+<!--        caption = "2019 BAAC dataset, ONISR\nantuki & comeetie, 2023", -->
 <!--        x = "", y = "") -->
 <!-- ``` -->
 
@@ -694,7 +694,7 @@ For simplicity, we focus here on `ggplot2`, a very well-known package for all ty
 <!--   scale_color_distiller(palette = "Reds", direction = 1)+ -->
 <!--   labs(title = "Part d'accidentés par type de véhicule et éclairage", -->
 <!--        subtitle = "à Paris en 2019. ", -->
-<!--        caption = "fichier BAAC 2019, ONISR\nantuki & comeetie, 2023", -->
+<!--        caption = "2019 BAAC dataset, ONISR\nantuki & comeetie, 2023", -->
 <!--        x = "", y = "") -->
 <!-- ``` -->
 
@@ -730,7 +730,7 @@ For simplicity, we focus here on `ggplot2`, a very well-known package for all ty
 <!--   theme_bw()+ -->
 <!--   labs(title = "Nombre d'accidentés suivant le sexe et le type de véhicule",  -->
 <!--        subtitle = "à Paris en 2019", -->
-<!--        caption = "fichier BAAC 2019, ONISR\nantuki & comeetie, 2023", -->
+<!--        caption = "2019 BAAC dataset, ONISR\nantuki & comeetie, 2023", -->
 <!--        x = "", y = "") -->
 <!-- ``` -->
 
@@ -782,7 +782,7 @@ ggplot() +
   geom_sf(data = acc_iris, colour = "ivory3", fill = "ivory") +
   geom_sf(data = acc_iris |>  st_centroid(),
           aes(size= nb_acc), colour="#E84923CC", show.legend = 'point') +
-  scale_size(name = "Nombre d'accidents",
+  scale_size(name = "Number of road accidents",
              breaks = c(1,10,100,200),
              range = c(0,5)) +
    coord_sf(crs = 2154, datum = NA,
@@ -791,8 +791,8 @@ ggplot() +
   theme_minimal() +
   theme(panel.background = element_rect(fill = "ivory",color=NA),
         plot.background = element_rect(fill = "ivory",color=NA),legend.position = "bottom") +
-  labs(title = "Nombre d'accidents de la route à Paris par iris",
-       caption = "fichier BAAC 2019, ONISR\nantuki & comeetie, 2023",x="",y="")
+  labs(title = "Number of road accidents in Paris by IRIS",
+       caption = "2019 BAAC dataset, ONISR\nantuki & comeetie, 2023",x="",y="")
 ```
 
 ## 
@@ -814,7 +814,7 @@ acc_iris <- acc_iris |> mutate(txaccvelo = 100*nb_velo/nb_acc,
 ggplot() +
   geom_sf(data = iris.75,colour = "ivory3",fill = "ivory") +
   geom_sf(data = acc_iris, aes(fill = txaccvelo_cat)) +
-  scale_fill_brewer(name = "Part (En %)",
+  scale_fill_brewer(name = "Share (%)",
                     palette = "Reds",
                     na.value = "grey80") +
   coord_sf(crs = 2154, datum = NA,
@@ -823,9 +823,9 @@ ggplot() +
   theme_minimal() +
   theme(panel.background = element_rect(fill = "ivory",color=NA),
         plot.background = element_rect(fill = "ivory",color=NA),legend.position="bottom") +
-  labs(title = "Part des accidentés à vélos",
-       subtitle = "par arrondissement à Paris en 2019",
-       caption = "fichier BAAC 2019, ONISR\nantuki & comeetie, 2023",
+  labs(title = "Share of injured cyclists",
+  subtitle = "By district in Paris, 2019",
+  caption = "2019 BAAC dataset, ONISR\nantuki & comeetie, 2023",
        x = "", y = "")
 ```
 
@@ -849,7 +849,7 @@ mf_map(
   border = "grey50",
   lwd = 0.1,
   leg_pos = c("topright","right"),
-  leg_title = c("Nombre d'accidents", "Part des accidentés à vélo"),
+  leg_title = c("Number of accidents", "Proportion of accidents involving bicycles"),
   breaks = c(0,8,15,25,100),
   nbreaks = 5,
   inches= 0.16,
@@ -858,8 +858,8 @@ mf_map(
   leg_frame = c(TRUE, TRUE)
 )
 mf_layout(
-  title = "Nombre d'accidents de la route et proportion d'accidents impliquant des vélos",
-  credits = "fichier BAAC 2019, ONISR\nantuki & comeetie, 2023",
+  title = "Number of road accidents and proportion of accidents involving bicycles",
+  credits = "2019 BAAC dataset, ONISR\nantuki & comeetie, 2023",
   frame = TRUE)
 ```
 
@@ -997,7 +997,7 @@ mf_layout(
 <!--         plot.background = element_rect(fill = "white",color=NA)) + -->
 <!--   labs(title = "Nombre de personnes accidentées sur le périphérique", -->
 <!--        subtitle = "en 2019, par portion de 500m", -->
-<!--        caption = "fichier BAAC 2019, ONISR\nantuki & comeetie, 2023",x="",y="") -->
+<!--        caption = "2019 BAAC dataset, ONISR\nantuki & comeetie, 2023",x="",y="") -->
 
 <!-- ``` -->
 

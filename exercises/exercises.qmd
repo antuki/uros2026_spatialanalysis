@@ -152,7 +152,8 @@ title("Accidents in Paris")
 ```
 
 ::: {.callout-note icon=false}
-## Question 5
+## Question 5 [Bonus]
+
 Perform at least one of the following geometric processing tasks:
 
 1. Create a polygon outlining Paris by aggregating the Paris iris (simple union)
@@ -268,7 +269,7 @@ head(accidents.2019.paris.iris)
 
 
 ::: {.callout-note icon=false}
-## Question 7
+## Question 7 [Bonus]
 Use the ‘accidents.2019.paris.iris’ layer to create a new aggregated map layer called ‘accidents.2019.paris.arr’ corresponding to the arrondissements of Paris.
 
 Also keep in this new layer the information on the number of people involved in accidents and the number of people involved in accidents who were not injured in each arrondissement.
@@ -308,7 +309,40 @@ In this exercise, we will use `mapview` to explore road accidents that occurred 
 
 ::: {.callout-note icon=false}
 ## Question 1
-Load the ‘accidents.2019.paris’ database and display the locations of the 11,897 people who were victims of an accident in Paris in 2019 using the `mapview` package. Try using different parameters to customize your map. In particular, color the points according to accident severity.
+Load the ‘accidents.2019.paris’ database and display the locations of the 11,897 people who were victims of an accident in Paris in 2019 using the `mapview` package.
+:::
+
+::: {.callout-caution collapse="true"}
+## Solution
+
+```{r, eval = TRUE}
+library(mapview)
+library(sf)
+accidents.2019.paris <- st_read("data/accidents2019_paris.geojson", 
+                                quiet = TRUE)
+m <- mapview(accidents.2019.paris,
+        label = accidents.2019.paris$Num_Acc, 
+        color = "white", legend = TRUE)
+```
+
+```{r, eval=FALSE}
+m
+```
+
+:::
+
+
+```{r, eval = TRUE, echo = FALSE}
+# We sample only 100 points to keep the html file size down
+mapview(accidents.2019.paris |>sample_n(100),
+        label = accidents.2019.paris$Num_Acc, 
+        color = "white", legend = TRUE)
+```
+
+
+::: {.callout-note icon=false}
+## Question 2 [Bonus]
+Try using different parameters to customize your map. In particular, color the points according to accident severity.
 :::
 
 ::: {.callout-warning}
@@ -320,23 +354,18 @@ For example, you can use the `map.types`, `col.regions`, `label`, `color`, `lege
 ## Solution
 
 ```{r, eval = TRUE}
-library(mapview)
-library(sf)
-
-accidents.2019.paris <- st_read("data/accidents2019_paris.geojson", 
-                                quiet = TRUE)
 m <- mapview(accidents.2019.paris |>
           mutate(grav_f = factor(grav,
                          levels = c(2,3,4,1),
-                         labels = c("Tué", "Blessé hospitalisé", 
-                                    "Blessé léger","Indemne")
+                         labels = c("Killed", "Hospitalized injured",
+                           "Slightly injured", "Uninjured") 
                          )),
         col.regions = c("darkred","red","orange","darkgreen"),
         label = accidents.2019.paris$Num_Acc, 
         color = "white", legend = TRUE,
         zcol="grav_f", alpha=0.9,
         map.types = "OpenStreetMap.Mapnik",
-        layer.name = "Gravite",
+        layer.name = "Accident severity",
         homebutton = FALSE, lwd = 0.2)
 ```
 ```{r, eval=FALSE}
@@ -352,8 +381,8 @@ mapview(accidents.2019.paris |>
            sample_n(100) |> ### HERE
           mutate(grav_f = factor(grav,
                          levels = c(2,3,4,1),
-                         labels = c("Tué", "Blessé hospitalisé", 
-                                    "Blessé léger","Indemne")
+                         labels = c("Killed", "Hospitalized injured",
+                           "Slightly injured", "Uninjured") 
                          )),
         col.regions = c("darkred","red","orange","darkgreen"),
         label = accidents.2019.paris$Num_Acc, 
@@ -375,10 +404,10 @@ We want to create a map of the Paris arrondissements that combines the number of
 
 Prepare the data for the map using the following steps:
 
-1. Load the 'com75_shp' map background (which contains the number of people involved in accidents, both total and uninjured, in each arrondissement) and create a variable called *part_non_blesses* corresponding to the share of uninjured people among accident victims in each arrondissement.
-2. Create a vector of the quartiles of the *part_non_blesses* variable.
+1. Load the 'com75_shp' map background (which contains the number of people involved in accidents, both total and uninjured, in each arrondissement) and create a variable called *prop_uninjured* corresponding to the share of uninjured people among accident victims in each arrondissement.
+2. Create a vector of the quartiles of the *prop_uninjured* variable.
 3. Create the color vector corresponding to the number of classes defined above.
-4. Add a variable called *typo* to 'com.75' indicating the arrondissement class according to the discretization contained in *bks* for the *part_non_blesses* variable.
+4. Add a variable called *typo* to 'com.75' indicating the arrondissement class according to the discretization contained in *bks* for the *prop_uninjured* variable.
 
 :::
 
@@ -392,12 +421,12 @@ For creating the `typo` variable, you can use the `cut` function with the `digit
 ## Solution
 ```{r}
 library(sf)
-# 1. Import the data and create the part_non_blesses variable
+# 1. Import the data and create the prop_uninjured variable
 com.75 <- st_read("data/com_75.shp", quiet = TRUE)
-com.75$part_non_blesses <- 100 * com.75$nbaccnb / com.75$nbacc
+com.75$prop_uninjured <- 100 * com.75$nbaccnb / com.75$nbacc
 
 # 2. Define bks by quantile
-bks <- quantile(com.75$part_non_blesses, na.rm = TRUE, probs=seq(0,1,0.25))
+bks <- quantile(com.75$prop_uninjured, na.rm = TRUE, probs=seq(0,1,0.25))
 
 # 3. Define a color palette
 library(RColorBrewer)
@@ -406,7 +435,7 @@ cols <- brewer.pal(length(bks)-1,"Greens")
 # 4. Typo variable
 library(dplyr)
 com.75 <- com.75 |>
-  mutate(typo = cut(part_non_blesses,
+  mutate(typo = cut(prop_uninjured,
                     breaks = bks,
                     labels = paste0(
                       round(bks[1:(length(bks)-1)]),
@@ -420,9 +449,8 @@ com.75 <- com.75 |>
 ::: {.callout-note icon=false}
 ## Question 2
 
-Using the `ggplot2` package, create a map containing the `part_non_blesses` variable as a choropleth and the `nbacc` variable as proportional circles.
+Using the `ggplot2` package, create a map containing the `prop_uninjured` variable as a choropleth and the `nbacc` variable as proportional circles.
 :::
-## Bonus
 
 ::: {.callout-caution collapse="true"}
 ## Solution
@@ -458,7 +486,7 @@ plot(map_ggplot)
 ```{r, echo = FALSE}
 plot(map_ggplot)
 ```
- 
+
 
 ::: {.callout-note icon=false}
 ## Bonus
@@ -476,7 +504,7 @@ mf_theme("default",cex=0.9,mar=c(0,0,1.2,0),bg="ivory")
 #mf_init(x = com.75, theme = "ink", expandBB = c(0, 0, 0, .15))
 mf_map(
   x = com.75,
-  var = "part_non_blesses",
+  var = "prop_uninjured",
   type = "choro",
   border = "grey80",
   lwd = 0.1,
@@ -515,7 +543,7 @@ mf_theme("default",cex=0.9,mar=c(0,0,1.2,0),bg="ivory")
 #mf_init(x = com.75, theme = "ink", expandBB = c(0, 0, 0, .15))
 mf_map(
   x = com.75,
-  var = "part_non_blesses",
+  var = "prop_uninjured",
   type = "choro",
   border = "grey80",
   lwd = 0.1,
@@ -545,6 +573,7 @@ mf_layout(
   credits = "fichier BAAC 2019, ONISR\nantuki & comeetie, 2023",
   frame = TRUE)
 ```
+
 # BONUS Exercises
 
 ## Exercise A: Geocoding
@@ -824,7 +853,7 @@ graph <- ggplot(data = gg,aes(x = prop, y= factor(catv_f,levels=ordre_catv_f),fi
   geom_bar(stat="identity") + 
    geom_text(aes(label = round(prop)),
              position = position_stack(vjust = 0.5)) +
-  scale_fill_manual("Gravité (%)",
+  scale_fill_manual("Accident severity (%)",
                     values =  c("darkred","red","orange","darkgreen"))+
   theme_bw()+
   labs(title = "Répartition de la gravité des accidents par type de véhicule",
