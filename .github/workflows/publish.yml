@@ -1,17 +1,15 @@
 # Workflow derived from https://github.com/InseeFrLab/onyxia-quarto
+
+name: Rmd Publish
+
 on:
   push:
-    branches: 
+    branches:
       - main
     paths:
       - lecture/*
       - exercises/*
-
-name: Rmd Publish
-
-jobs:
-  build-deploy:
-
+  workflow_dispatch:
 
 permissions:
   contents: write
