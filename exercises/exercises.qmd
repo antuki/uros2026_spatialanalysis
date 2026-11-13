@@ -1,5 +1,5 @@
 ---
-title: "**Tutorial** Introduction to Spatial Analysis and Cartography with R"
+title: "**Exercises** Introduction to Spatial Analysis and Cartography with R"
 subtitle: "**uRos** November 2026"
 author: "Kim Antunez"
 lang: en
@@ -152,7 +152,7 @@ title("Accidents in Paris")
 ```
 
 ::: {.callout-note icon=false}
-## Question 5 [Bonus]
+## Question 5 (Bonus)
 
 Perform at least one of the following geometric processing tasks:
 
@@ -269,7 +269,7 @@ head(accidents.2019.paris.iris)
 
 
 ::: {.callout-note icon=false}
-## Question 7 [Bonus]
+## Question 7 (Bonus)
 Use the ‘accidents.2019.paris.iris’ layer to create a new aggregated map layer called ‘accidents.2019.paris.arr’ corresponding to the arrondissements of Paris.
 
 Also keep in this new layer the information on the number of people involved in accidents and the number of people involved in accidents who were not injured in each arrondissement.
@@ -320,9 +320,8 @@ library(mapview)
 library(sf)
 accidents.2019.paris <- st_read("data/accidents2019_paris.geojson", 
                                 quiet = TRUE)
-m <- mapview(accidents.2019.paris,
-        label = accidents.2019.paris$Num_Acc, 
-        color = "white", legend = TRUE)
+m <-  mapview(accidents.2019.paris,
+        map.types = "OpenStreetMap.Mapnik", layer.name = "Accidents")
 ```
 
 ```{r, eval=FALSE}
@@ -334,14 +333,13 @@ m
 
 ```{r, eval = TRUE, echo = FALSE}
 # We sample only 100 points to keep the html file size down
-mapview(accidents.2019.paris |>sample_n(100),
-        label = accidents.2019.paris$Num_Acc, 
-        color = "white", legend = TRUE)
+mapview(accidents.2019.paris |> sample_n(100),
+        map.types = "OpenStreetMap.Mapnik", layer.name = "Accidents")
 ```
 
 
 ::: {.callout-note icon=false}
-## Question 2 [Bonus]
+## Question 2 (Bonus)
 Try using different parameters to customize your map. In particular, color the points according to accident severity.
 :::
 
@@ -489,7 +487,7 @@ plot(map_ggplot)
 
 
 ::: {.callout-note icon=false}
-## Bonus
+## Question 3 (Bonus)
 
 Create the same map using the `mapsf` package.
 :::
@@ -650,21 +648,30 @@ Use:
 * `osmdata:osmdata_sf()` to retrieve the OSM data.
 :::
 
-```{r, include = FALSE}
+```{r, eval = FALSE, include = FALSE}
 # in Quarto, specify another API endpoint so that it does not fail
+library(osmdata)
 osmdata::set_overpass_url(
   "https://lz4.overpass-api.de/api/interpreter"
 )
+q       <- opq(bbox = bb,timeout = 180,  osm_types = "way")
+qt      <- add_osm_feature (q, key = 'highway',value = 'trunk', value_exact = TRUE)
+roads    <- c(osmdata_sf(qt))$osm_lines %>% st_transform(st_crs(iris.75))
+Encoding(roads$name) <- "UTF-8" #in case of encoding problems
+saveRDS(roads, "exercises/data/roads_exerciseB.RDS")
 ```
 
 ::: {.callout-caution collapse="true"}
 ## Solution
-```{r}
+```{r, eval = FALSE}
 library(osmdata)
 q       <- opq(bbox = bb,timeout = 180)
 qt      <- add_osm_feature (q, key = 'highway',value = 'trunk', value_exact = FALSE)
 roads    <- c(osmdata_sf(qt))$osm_lines %>% st_transform(st_crs(iris.75))
 Encoding(roads$name) <- "UTF-8" #in case of encoding problems
+```
+```{r, include = FALSE}
+roads <- readRDS("data/roads_exerciseB.RDS")
 ```
 :::
 

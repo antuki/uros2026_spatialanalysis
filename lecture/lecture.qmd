@@ -1054,19 +1054,26 @@ lat_longs
 - [`osmdata`](https://github.com/ropensci/osmdata)
 
 
-```{r, include = FALSE}
+```{r, eval = FALSE, echo=FALSE}
 # in Quarto, specify another API endpoint to prevent it from failing
 osmdata::set_overpass_url(
   "https://lz4.overpass-api.de/api/interpreter"
 )
 ```
 
-```{r}
+
+```{r, eval = FALSE}
 library(osmdata)
 bb = c(4.75, 43.92, 4.85, 43.97) # Avignon
 roads <- opq (bbox = bb) |> 
     add_osm_feature (key = "highway") |>
     osmdata_sf()
+```
+
+```{r,  include = FALSE}
+library(osmdata)
+bb = c(4.75, 43.92, 4.85, 43.97) # Avignon
+roads <- readRDS("data/osmdata/roads.RDS")
 ```
 
 ##
