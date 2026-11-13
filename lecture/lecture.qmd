@@ -1,5 +1,5 @@
 ---
-title: "**Tutorial** Introduction to Spatial Analysis and Cartography with R "
+title: "**Tutorial** Introduction to Spatial Analysis and Cartography with R"
 subtitle: "**uRos** November 2026"
 author: "Kim Antunez"
 #institute: "Timothée Giraud"
